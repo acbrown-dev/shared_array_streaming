@@ -1,0 +1,61 @@
+[project]
+name = "arraystream"
+version = "0.1.0"
+description = "POSIX shared-memory ring buffer for streaming numpy frame batches between processes"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "arraystream contributors" }]
+keywords = ["shared-memory", "ring-buffer", "numpy", "ipc", "multiprocessing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: System :: Distributed Computing",
+]
+dependencies = ["numpy>=1.24"]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/arraystream"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "subprocess: cross-process tests (deselected in CI)",
+]
+addopts = "-m 'not subprocess'"
+
+[tool.coverage.run]
+branch = true
+source = ["arraystream"]
+omit = ["tests/*", "benchmarks/*", "examples/*"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+src = ["src", "tests", "benchmarks", "examples"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+quote-style = "double"
